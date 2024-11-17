@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BTL_ANDROID</string>
+    <string-array name="category">
+        <item>Louis Vuitton</item>
+        <item>Gucci</item>
+        <item>Dior</item>
+        <item>Nike</item>
+        <item>Adidas</item>
+    </string-array>
+</resources>
