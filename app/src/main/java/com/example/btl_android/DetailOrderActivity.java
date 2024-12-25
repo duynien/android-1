@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class DetailOrderActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView name, mobile, address, price, discount, total_price, status;
-    private Button btnBack, btnConfirm;
+    private Button btnConfirm;
     private RecyclerView recyclerView;
     private RecyclerOrderProductAdapter adapter;
     private SharedPreferences sharedPreferences;
@@ -45,7 +46,6 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_order);
         initView();
-        btnBack.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order");
@@ -68,11 +68,26 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         }
         sharedPreferences = getApplicationContext().getSharedPreferences(SHARE_PRE_NAME, Context.MODE_PRIVATE);
         String role = sharedPreferences.getString("role", null);
-        if(role != null && role.equalsIgnoreCase("employee")){
+        if(role != null && role.equalsIgnoreCase("admin")){
             btnConfirm.setVisibility(View.VISIBLE);
         } else {
             btnConfirm.setVisibility(View.GONE);
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Chi tiết đơn hàng");
+        }
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void initView() {
@@ -83,7 +98,6 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         discount = findViewById(R.id.discount);
         total_price = findViewById(R.id.total_price);
         status = findViewById(R.id.status);
-        btnBack = findViewById(R.id.btnBack);
         btnConfirm = findViewById(R.id.btnConfirm);
         recyclerView = findViewById(R.id.recyclerView);
         orderSQLiteHelper = new OrderSQLiteHelper(getApplicationContext());
@@ -91,9 +105,6 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view == btnBack){
-            finish();
-        }
         if(view == btnConfirm){
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Thông báo xác nhận");
@@ -119,6 +130,9 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
     private int getTongTien(List<OrderProduct> list){
         int sum = 0;
         for(OrderProduct o: list){
+            if (o.getProduct() == null) {
+                continue;
+            }
             sum += Integer.parseInt(o.getProduct().getPrice()) * o.getQuantity();
         }
         return sum;

@@ -15,13 +15,10 @@ import com.example.btl_android.dal.ProductSQLiteHelper;
 import com.example.btl_android.model.Product;
 
 public class AddProductActivity extends AppCompatActivity implements View.OnClickListener {
+    private final int[] imgs = {R.drawable.product1, R.drawable.product2, R.drawable.product3, R.drawable.product4, R.drawable.product5, R.drawable.product6, R.drawable.product7, R.drawable.product8, R.drawable.product9, R.drawable.product10};
     private Spinner image, category;
     private EditText name, price, description;
     private Button btnAdd, btnCancel;
-
-    private int[] imgs = {R.drawable.product1, R.drawable.product2, R.drawable.product3,
-            R.drawable.product4, R.drawable.product5, R.drawable.product6,
-            R.drawable.product7, R.drawable.product8, R.drawable.product9, R.drawable.product10};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +33,9 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         image = findViewById(R.id.image);
         SpinnerImageAdapter adapter = new SpinnerImageAdapter(this);
         image.setAdapter(adapter);
-
         category = findViewById(R.id.category);
-        category.setAdapter(new ArrayAdapter<String>(this, R.layout.item_spinner1, getResources().getStringArray(R.array.category)));
+        category.setAdapter(new ArrayAdapter<String>(this, R.layout.item_spinner1,
+                getResources().getStringArray(R.array.category)));
         name = findViewById(R.id.name);
         price = findViewById(R.id.price);
         description = findViewById(R.id.description);
@@ -48,7 +45,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        if(view == btnAdd){
+        if (view == btnAdd) {
             String imageP = image.getSelectedItem().toString();
             System.out.println(imageP);
             System.out.println(Integer.parseInt(imageP));
@@ -56,16 +53,17 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             String priceP = price.getText().toString();
             String descriptionP = description.getText().toString();
             String categoryP = category.getSelectedItem().toString();
-            if(!nameP.isEmpty() && !priceP.isEmpty() && !descriptionP.isEmpty()){
+            if (!nameP.isEmpty() && !priceP.isEmpty() && !descriptionP.isEmpty()) {
                 Product product = new Product(imageP, nameP, priceP, descriptionP, categoryP);
                 ProductSQLiteHelper db = new ProductSQLiteHelper(this);
                 db.addProduct(product);
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "All fields are required!",
+                        Toast.LENGTH_SHORT).show();
             }
         }
-        if(view == btnCancel){
+        if (view == btnCancel) {
             finish();
         }
     }

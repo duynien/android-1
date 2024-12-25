@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="380dp"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:layout_marginVertical="10dp"
     android:background="@drawable/rounded_button"
     android:backgroundTint="#F3F2EA"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <!-- Header Row -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="30dp">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="5dp">
+
+        <!-- Username -->
         <TextView
             android:id="@+id/username"
-            android:layout_marginLeft="20dp"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:textStyle="bold"
             android:gravity="center_vertical"
-            android:text="fsfdsfdfsfsdfd"/>
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="fsfdsfdfsfsdfd" />
+
+        <!-- Star Rating -->
         <TextView
             android:id="@+id/star"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="#FFC107"
             android:textStyle="bold"
-            android:textSize="30dp"
-            android:text="*****"/>
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="*****" />
+
+        <!-- Date -->
         <TextView
             android:id="@+id/date"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="20/03/2024"/>
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:text="20/03/2024" />
     </LinearLayout>
+
+    <!-- Comment Text -->
     <TextView
         android:id="@+id/comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20dp"
-        android:text="San pham rat on, dang mua con cho nay khong "/>
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="16sp"
+        android:text="San pham rat on, dang mua con cho nay khong." />
 
 </LinearLayout>

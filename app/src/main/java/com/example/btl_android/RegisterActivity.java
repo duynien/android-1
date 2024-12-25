@@ -7,21 +7,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.btl_android.dal.UserSQLiteHelper;
 import com.example.btl_android.model.User;
+import com.example.btl_android.util.CommonUtil;
+import com.example.btl_android.util.HashUtil;
+import com.example.btl_android.util.PasswordUtil;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText name, username, password, repass;
+    private final int REQUEST_CODE = 9999;
+    private EditText name, username, password, repass, email, phone;
     private Button btnRegister, btCancel;
     private UserSQLiteHelper userSQLiteHelper;
-    private final int REQUEST_CODE = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initView();
         btCancel.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Register");
+        }
     }
-    private void initView(){
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    private void initView() {
         name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        phone = findViewById(R.id.phone);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         repass = findViewById(R.id.repass);
@@ -43,43 +59,86 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if(view == btnRegister){
-            if(name.getText().toString().isEmpty() || username.getText().toString().isEmpty() || password.getText().toString().isEmpty() || repass.getText().toString().isEmpty()){
-                Toast.makeText(getApplicationContext(), "Required to input all fields!", Toast.LENGTH_SHORT).show();
-            } else {
-                if(password.getText().toString().equals(repass.getText().toString())){
-                    if(PasswordUtil.isStrongPassword(password.getText().toString())){
-                        User user = new User(name.getText().toString(), username.getText().toString(), password.getText().toString(), "customer");
-                        if(userSQLiteHelper.isExisted(user.getUsername())){
-                            Toast.makeText(getApplicationContext(), "username is alrealdy existed!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            String rawPassword = user.getPassword();
-                            String encodePassword = "";
-                            try {
-                                encodePassword = HashUtil.sha256(rawPassword);
-                            } catch (Exception e) {
-                                System.out.println("Hashing error: " + e.getMessage());
-                                e.printStackTrace();
-                            }
-                            user.setPassword(encodePassword);
-                            userSQLiteHelper.addUser(user);
-                            Intent intent = new Intent();
-                            user.setPassword(rawPassword);
-                            intent.putExtra("user", user);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Password is not enough strong!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Password and confirm password doesn't match!", Toast.LENGTH_SHORT).show();
-                }
+        if (view == btnRegister) {
+            String nameInput = name.getText().toString().trim();
+            String emailInput = email.getText().toString().trim();
+            String phoneInput = phone.getText().toString().trim();
+            String usernameInput = username.getText().toString().trim();
+            String passwordInput = password.getText().toString();
+            String repassInput = repass.getText().toString();
+
+            if (nameInput.isEmpty() || usernameInput.isEmpty() || passwordInput.isEmpty() || repassInput.isEmpty() || emailInput.isEmpty() || phoneInput.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "All fields are required!",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
 
+            if (!CommonUtil.isValidEmail(emailInput)) {
+                Toast.makeText(getApplicationContext(), "Invalid email format!", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+
+            if (!CommonUtil.isValidPhoneNumber(phoneInput)) {
+                Toast.makeText(getApplicationContext(), "Invalid phone number!", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+
+            if (CommonUtil.isValidUsername(usernameInput)) {
+                Toast.makeText(getApplicationContext(), "Invalid username format!", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+
+            if (!passwordInput.equals(repassInput)) {
+                Toast.makeText(getApplicationContext(), "Passwords do not match!",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!PasswordUtil.isStrongPassword(passwordInput)) {
+                Toast.makeText(getApplicationContext(), "Password must be strong!",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Check if the username already exists
+            if (userSQLiteHelper.isExisted(usernameInput)) {
+                Toast.makeText(getApplicationContext(), "Username already exists!",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (userSQLiteHelper.isEmailExists(emailInput)) {
+                Toast.makeText(getApplicationContext(), "Email already exists!", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+
+            // Generate salt and hash the password with salt
+            String salt = HashUtil.generateSalt();
+            String hashedPassword = null;
+            try {
+                hashedPassword = HashUtil.hashPasswordWithSalt(passwordInput, salt);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            // Create user and store in the database
+            User user = new User(nameInput, usernameInput, hashedPassword, "customer", emailInput, phoneInput, salt);
+            userSQLiteHelper.addUser(user);
+
+            Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_SHORT)
+                    .show();
+            Intent intent = new Intent();
+            intent.putExtra("user", user);
+            setResult(RESULT_OK, intent);
+            finish();
         }
-        if(view == btCancel){
-            setResult(RESULT_CANCELED, null);
+
+        if (view == btCancel) {
+            setResult(RESULT_CANCELED);
             finish();
         }
     }

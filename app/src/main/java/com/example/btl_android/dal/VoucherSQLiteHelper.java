@@ -8,19 +8,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.model.Order;
 import com.example.btl_android.model.Voucher;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class VoucherSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "voucher.db";
-    private static int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
     private final String TABLE_NAME = "voucher";
 
     public VoucherSQLiteHelper(@Nullable Context context) {
@@ -29,13 +27,7 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE voucher (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "code TEXT," +
-                "title TEXT," +
-                "percentage TEXT," +
-                "start TEXT," +
-                "ends TEXT)";
+        String sql = "CREATE TABLE voucher (" + "id INTEGER PRIMARY KEY AUTOINCREMENT," + "code TEXT," + "title TEXT," + "percentage TEXT," + "start TEXT," + "ends TEXT)";
         db.execSQL(sql);
     }
 
@@ -48,7 +40,8 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
     }
-    public List<Voucher> getAllVoucher(){
+
+    public List<Voucher> getAllVoucher() {
         List<Voucher> list = new ArrayList<>();
         SQLiteDatabase st = getReadableDatabase();
         String order = "start DESC";
@@ -60,7 +53,7 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
             String percentage = rs.getString(3);
             String start = rs.getString(4);
             String ends = rs.getString(5);
-            if(isAvailable(ends)){
+            if (isAvailable(ends)) {
                 list.add(new Voucher(id, code, title, percentage, start, ends));
             }
         }
@@ -69,8 +62,8 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
         }
         return list;
     }
-    public Voucher getVoucherByCode(String code){
-        List<Voucher> list = new ArrayList<>();
+
+    public Voucher getVoucherByCode(String code) {
         SQLiteDatabase st = getReadableDatabase();
 
         Cursor rs = st.query(TABLE_NAME, null, "code = ?", new String[]{code}, null, null, null);
@@ -98,10 +91,12 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
         values.put("ends", ends);
         db.insert(TABLE_NAME, null, values);
     }
+
     public void deleteVoucher(int id) {
         SQLiteDatabase st = getWritableDatabase();
         st.delete(TABLE_NAME, "id = ?", new String[]{String.valueOf(id)});
     }
+
     private boolean isAvailable(String s2) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
@@ -109,7 +104,7 @@ public class VoucherSQLiteHelper extends SQLiteOpenHelper {
             Date currentDate = new Date();
             Date date2 = format.parse(s2);
             return currentDate.compareTo(date2) <= 0;
-        } catch (ParseException e){
+        } catch (ParseException e) {
 
         }
         return false;

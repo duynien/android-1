@@ -1,5 +1,6 @@
 package com.example.btl_android.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -44,18 +45,29 @@ public class RecycleOrderAdapter extends RecyclerView.Adapter<RecycleOrderAdapte
         return list.get(position);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = list.get(position);
         holder.date.setText(order.getDate());
         holder.total_price.setText(formatNumber(order.getTotal_price()) + " $");
-        if(order.getStatus().equalsIgnoreCase("Done")){
-            holder.date.setBackgroundColor(Color.parseColor("#4CAF50"));
-            holder.total_price.setBackgroundColor(Color.parseColor("#4CAF50"));
+
+        if (order.getStatus().equalsIgnoreCase("Done")) {
+            holder.status.setText(order.getStatus());
+            holder.status.setTextColor(Color.parseColor("#4CAF50"));
         } else {
-            holder.date.setBackgroundColor(Color.parseColor("#FF5722"));
-            holder.total_price.setBackgroundColor(Color.parseColor("#FF5722"));
+            holder.status.setText("Processing");
+            // set color for status processing is orange
+            holder.status.setTextColor(Color.parseColor("#FF5722"));
         }
+
+//        if(order.getStatus().equalsIgnoreCase("Done")){
+//            holder.date.setBackgroundColor(Color.parseColor("#4CAF50"));
+//            holder.total_price.setBackgroundColor(Color.parseColor("#4CAF50"));
+//        } else {
+//            holder.date.setBackgroundColor(Color.parseColor("#FF5722"));
+//            holder.total_price.setBackgroundColor(Color.parseColor("#FF5722"));
+//        }
     }
 
     @Override
@@ -64,12 +76,13 @@ public class RecycleOrderAdapter extends RecyclerView.Adapter<RecycleOrderAdapte
     }
 
     public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView date, total_price;
+        private TextView date, total_price, status;
         private LinearLayout item_order;
         public OrderViewHolder(@NonNull View view) {
             super(view);
             date = view.findViewById(R.id.date);
             total_price = view.findViewById(R.id.total_price);
+            status = view.findViewById(R.id.status);
             view.setOnClickListener(this);
         }
 

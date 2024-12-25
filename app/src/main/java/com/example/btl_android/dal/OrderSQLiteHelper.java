@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.model.Cart;
 import com.example.btl_android.model.Order;
 import com.example.btl_android.model.OrderProduct;
+import com.example.btl_android.model.Product;
 import com.example.btl_android.model.User;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import java.util.List;
 
 public class OrderSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "orders.db";
-    private static int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
     private final String TABLE_NAME = "orders";
     private OrderProductSQLiteHelper orderProductSQLiteHelper;
     private UserSQLiteHelper userSQLiteHelper;
-    private Context context;
+    private final Context context;
 
     public OrderSQLiteHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,14 +31,7 @@ public class OrderSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE orders (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "user_id TEXT," +
-                "total_price TEXT," +
-                "mobile TEXT," +
-                "address TEXT," +
-                "status TEXT," +
-                "date TEXT)";
+        String sql = "CREATE TABLE orders (" + "id INTEGER PRIMARY KEY AUTOINCREMENT," + "user_id TEXT," + "total_price TEXT," + "mobile TEXT," + "address TEXT," + "status TEXT," + "date TEXT)";
         db.execSQL(sql);
     }
 
@@ -51,10 +44,12 @@ public class OrderSQLiteHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
     }
-    public List<Order> getOrderByUserId(String user_id){
+
+    public List<Order> getOrderByUserId(String user_id) {
         List<Order> list = new ArrayList<>();
         SQLiteDatabase st = getReadableDatabase();
-        Cursor rs = st.query(TABLE_NAME, null, null, null, null, null, null);
+        Cursor rs = st.query(TABLE_NAME, null, "user_id = ?", new String[]{user_id}, null, null,
+                null);
         while (rs != null && rs.moveToNext()) {
             int id = rs.getInt(0);
             String total_price = rs.getString(2);
@@ -62,22 +57,45 @@ public class OrderSQLiteHelper extends SQLiteOpenHelper {
             String address = rs.getString(4);
             String status = rs.getString(5);
             String date = rs.getString(6);
-            System.out.println("##### " + rs.getString(1));
             orderProductSQLiteHelper = new OrderProductSQLiteHelper(context);
             userSQLiteHelper = new UserSQLiteHelper(context);
-            List<OrderProduct> orderProducts = orderProductSQLiteHelper.getByOrderId(String.valueOf(id));
+            ProductSQLiteHelper productSQLiteHelper = new ProductSQLiteHelper(context);
+            List<OrderProduct> orderProducts = orderProductSQLiteHelper.getByOrderId(
+                    String.valueOf(id));
+
+            List<OrderProduct> items = new ArrayList<>();
+
+            for (OrderProduct orderProduct : orderProducts) {
+                if (orderProduct.getProduct() == null) {
+                    continue;
+                }
+
+                Product product = productSQLiteHelper.getProductById(
+                        orderProduct.getProduct().getId());
+                items.add(new OrderProduct(product, orderProduct.getQuantity()));
+            }
+
             User user = userSQLiteHelper.getUserById(user_id);
-            list.add(new Order(id, user, Integer.parseInt(total_price), orderProducts, mobile, address,status, date));
+            if (user == null) {
+                continue;
+            }
+            if (items.isEmpty()) {
+                continue;
+            }
+            list.add(new Order(id, user, Integer.parseInt(total_price), items, mobile, address,
+                    status, date));
         }
         if (rs != null) {
             rs.close();
         }
         return list;
     }
-    public List<Order> getAll(){
+
+    public List<Order> getAll() {
         List<Order> list = new ArrayList<>();
         SQLiteDatabase st = getReadableDatabase();
-        Cursor rs = st.query(TABLE_NAME, null, "status = ?", new String[]{"notDone"}, null, null, null);
+        Cursor rs = st.query(TABLE_NAME, null, "status = ?", new String[]{"notDone"}, null, null,
+                null);
         while (rs != null && rs.moveToNext()) {
             int id = rs.getInt(0);
             String user_id = rs.getString(1);
@@ -88,15 +106,36 @@ public class OrderSQLiteHelper extends SQLiteOpenHelper {
             String date = rs.getString(6);
             orderProductSQLiteHelper = new OrderProductSQLiteHelper(context);
             userSQLiteHelper = new UserSQLiteHelper(context);
-            List<OrderProduct> orderProducts = orderProductSQLiteHelper.getByOrderId(String.valueOf(id));
+            ProductSQLiteHelper productSQLiteHelper = new ProductSQLiteHelper(context);
+            List<OrderProduct> orderProducts = orderProductSQLiteHelper.getByOrderId(
+                    String.valueOf(id));
+            List<OrderProduct> items = new ArrayList<>();
+
+            for (OrderProduct orderProduct : orderProducts) {
+                if (orderProduct.getProduct() == null) {
+                    continue;
+                }
+                Product product = productSQLiteHelper.getProductById(
+                        orderProduct.getProduct().getId());
+                items.add(new OrderProduct(product, orderProduct.getQuantity()));
+            }
+
             User user = userSQLiteHelper.getUserById(user_id);
-            list.add(new Order(id, user, Integer.parseInt(total_price), orderProducts, mobile, address,status, date));
+            if (user == null) {
+                continue;
+            }
+            if (items.isEmpty()) {
+                continue;
+            }
+            list.add(new Order(id, user, Integer.parseInt(total_price), orderProducts, mobile,
+                    address, status, date));
         }
         if (rs != null) {
             rs.close();
         }
         return list;
     }
+
     public long addOrder(String user_id, String total_price, String mobile, String address, String status, String date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -109,6 +148,7 @@ public class OrderSQLiteHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(TABLE_NAME, null, values);
         return newRowId;
     }
+
     public void updateOrder(String order_id, String user_id, String total_price, String mobile, String address, String status, String date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

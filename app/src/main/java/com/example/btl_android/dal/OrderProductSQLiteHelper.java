@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.btl_android.model.Order;
 import com.example.btl_android.model.OrderProduct;
 import com.example.btl_android.model.Product;
 
@@ -17,10 +16,10 @@ import java.util.List;
 
 public class OrderProductSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "order_product.db";
-    private static int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
     private final String TABLE_NAME = "order_product";
     private ProductSQLiteHelper productSQLiteHelper;
-    private Context context;
+    private final Context context;
 
     public OrderProductSQLiteHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,11 +28,7 @@ public class OrderProductSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE order_product (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "order_id TEXT," +
-                "product_id TEXT," +
-                "quantity TEXT)";
+        String sql = "CREATE TABLE order_product (" + "id INTEGER PRIMARY KEY AUTOINCREMENT," + "order_id TEXT," + "product_id TEXT," + "quantity TEXT)";
         db.execSQL(sql);
     }
 
@@ -47,7 +42,7 @@ public class OrderProductSQLiteHelper extends SQLiteOpenHelper {
         super.onOpen(db);
     }
 
-    public List<OrderProduct> getByOrderId(String order_id){
+    public List<OrderProduct> getByOrderId(String order_id) {
         List<OrderProduct> list = new ArrayList<>();
         SQLiteDatabase st = getReadableDatabase();
         Cursor rs = st.query(TABLE_NAME, null, "order_id = ?", new String[]{order_id}, null, null, null);
@@ -63,6 +58,24 @@ public class OrderProductSQLiteHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
+    public List<OrderProduct> getByOrderIdAndUserId(String order_id, String user_id) {
+        List<OrderProduct> list = new ArrayList<>();
+        SQLiteDatabase st = getReadableDatabase();
+        Cursor rs = st.query(TABLE_NAME, null, "order_id = ?", new String[]{order_id}, null, null, null);
+        while (rs != null && rs.moveToNext()) {
+            String product_id = rs.getString(2);
+            String quantity = rs.getString(3);
+            productSQLiteHelper = new ProductSQLiteHelper(context);
+            Product product = productSQLiteHelper.getProductById(Integer.parseInt(product_id));
+            list.add(new OrderProduct(product, Integer.parseInt(quantity)));
+        }
+        if (rs != null) {
+            rs.close();
+        }
+        return list;
+    }
+
     public void addOrderProduct(String order_id, String product_id, String quantity) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

@@ -2,91 +2,112 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Toolbar at the top -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:layout_alignParentTop="true"/>
+
+    <!-- Image below the toolbar -->
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_height="410dp"
+        android:layout_below="@id/toolbar"
         android:src="@drawable/product1"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_back"
-        android:layout_alignParentTop="true"
-        android:backgroundTint="#A59A9A"/>
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:textColor="#F44336"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/image"
-        android:text="1000$"/>
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/price"
-        android:text="Ao polo cao cap"/>
 
-    <TextView
-        android:id="@+id/desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/name"
-        android:text="Describe: San pham thoi thuong, dang mua"/>
-    <LinearLayout
-        android:id="@+id/linear"
+    <!-- Scrollable content below the image -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/desc"
-        android:layout_gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="#FF9800"
-            android:layout_marginLeft="10dp"
-            android:text="Comment/Rating"/>
-        <TextView
-            android:id="@+id/star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:layout_marginLeft="10dp"
-            android:text="3.8/5"/>
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/star"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/image">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linear"
-        android:layout_marginTop="15dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Price Text -->
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="#F44336"
+                android:layout_marginLeft="10dp"
+                android:text="1000$"/>
+
+            <!-- Product Name -->
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Ao polo cao cap"/>
+
+            <!-- Product Description -->
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:text="Describe: San pham thoi thuong, dang mua"/>
+
+            <!-- Comment and Rating Section -->
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="#FF9800"
+                    android:layout_marginLeft="10dp"
+                    android:text="Comment/Rating"/>
+                <TextView
+                    android:id="@+id/star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="3.8/5"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/star"/>
+            </LinearLayout>
+
+            <!-- RecyclerView for displaying comments -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Floating Action Buttons for Cart and Order -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_addcart"
         android:layout_width="wrap_content"
@@ -97,6 +118,7 @@
         android:layout_marginBottom="90dp"
         android:src="@drawable/ic_cart"
         android:backgroundTint="#FF5722"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_buy"
         android:layout_width="wrap_content"

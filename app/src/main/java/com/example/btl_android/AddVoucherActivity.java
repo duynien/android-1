@@ -10,11 +10,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.btl_android.dal.VoucherSQLiteHelper;
 
@@ -55,94 +51,108 @@ public class AddVoucherActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        if(view == startTime){
+        if (view == startTime) {
             final Calendar c = Calendar.getInstance();
             int gio = c.get(Calendar.HOUR_OF_DAY);
             int phut = c.get(Calendar.MINUTE);
-            TimePickerDialog dialog = new TimePickerDialog(AddVoucherActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    String time = hourOfDay+":"+minute;
-                    if(time.charAt(1) == ':') time = "0" + time;
-                    if(time.length() < 5) time = time.substring(0, 3) + "0" + time.substring(3);
-                    startTime.setText(time);
-                }
+            TimePickerDialog dialog = new TimePickerDialog(AddVoucherActivity.this,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            String time = hourOfDay + ":" + minute;
+                            if (time.charAt(1) == ':') time = "0" + time;
+                            if (time.length() < 5) {
+                                time = time.substring(0, 3) + "0" + time.substring(3);
+                            }
+                            startTime.setText(time);
+                        }
 
-            },gio,phut,true);
+                    }, gio, phut, true);
             dialog.show();
         }
-        if(view == startDate){
+        if (view == startDate) {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog dialog = new DatePickerDialog(AddVoucherActivity.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String date="";
-                    if(month>8){
-                        date = dayOfMonth+"/"+(month+1)+"/"+year;
-                    }
-                    else{
-                        date = dayOfMonth+"/0"+(month+1)+"/"+year;
-                    }
-                    if(date.length() < 10) date = "0" + date;
-                    startDate.setText(date);
-                }
-            },year,month,day);
+            DatePickerDialog dialog = new DatePickerDialog(AddVoucherActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            String date = "";
+                            if (month > 8) {
+                                date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                            } else {
+                                date = dayOfMonth + "/0" + (month + 1) + "/" + year;
+                            }
+                            if (date.length() < 10) date = "0" + date;
+                            startDate.setText(date);
+                        }
+                    }, year, month, day);
             dialog.show();
         }
-        if(view == endDate){
+        if (view == endDate) {
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog dialog = new DatePickerDialog(AddVoucherActivity.this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    String date="";
-                    if(month>8){
-                        date = dayOfMonth+"/"+(month+1)+"/"+year;
-                    }
-                    else{
-                        date = dayOfMonth+"/0"+(month+1)+"/"+year;
-                    }
-                    if(date.length() < 10) date = "0" + date;
-                    endDate.setText(date);
-                }
-            },year,month,day);
+            DatePickerDialog dialog = new DatePickerDialog(AddVoucherActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            String date = "";
+                            if (month > 8) {
+                                date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                            } else {
+                                date = dayOfMonth + "/0" + (month + 1) + "/" + year;
+                            }
+                            if (date.length() < 10) date = "0" + date;
+                            endDate.setText(date);
+                        }
+                    }, year, month, day);
             dialog.show();
         }
-        if(view == btnCancel){
+        if (view == btnCancel) {
             finish();
         }
-        if(view == btnAdd){
+        if (view == btnAdd) {
             String code1 = code.getText().toString();
             String title1 = title.getText().toString();
             String percentage1 = percentage.getText().toString();
             String start = startTime.getText().toString() + " " + startDate.getText().toString();
             String end = endDate.getText().toString();
-            if(code1.isEmpty() || title1.isEmpty() || startTime.getText().toString().isEmpty() || startDate.getText().toString().isEmpty() || end.isEmpty()){
-                Toast.makeText(getApplicationContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
+            if (code1.isEmpty() || title1.isEmpty() || startTime.getText().toString()
+                    .isEmpty() || startDate.getText().toString().isEmpty() || end.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "All fields are required!",
+                        Toast.LENGTH_SHORT).show();
             } else {
-                if(!isGreaterToday(startTime.getText().toString() + " " + startDate.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "Date required after today!", Toast.LENGTH_SHORT).show();
+                if (!isGreaterToday(
+                        startTime.getText().toString() + " " + startDate.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Date required after today!",
+                            Toast.LENGTH_SHORT).show();
                 } else {
-                    if(isGreater(startDate.getText().toString(), end)){
-                        if(voucherSQLiteHelper.getVoucherByCode(code1.trim()) != null){
-                            Toast.makeText(getApplicationContext(), "Voucher is already existed!", Toast.LENGTH_SHORT).show();
+                    if (isGreater(startDate.getText().toString(), end)) {
+                        if (voucherSQLiteHelper.getVoucherByCode(code1.trim()) != null) {
+                            Toast.makeText(getApplicationContext(), "Voucher is already existed!",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            if(Integer.parseInt(percentage1) < 1 || Integer.parseInt(percentage1) > 50){
-                                Toast.makeText(getApplicationContext(), "Percentage must be in range 0 to 50!", Toast.LENGTH_SHORT).show();
+                            if (Integer.parseInt(percentage1) < 1 || Integer.parseInt(
+                                    percentage1) > 50) {
+                                Toast.makeText(getApplicationContext(),
+                                                "Percentage must be in range 0 to 50!", Toast.LENGTH_SHORT)
+                                        .show();
                             } else {
-                                voucherSQLiteHelper.addVoucher(code1, title1, percentage1, start, end);
-                                Toast.makeText(getApplicationContext(), "Voucher added!", Toast.LENGTH_SHORT).show();
+                                voucherSQLiteHelper.addVoucher(code1, title1, percentage1, start,
+                                        end);
+                                Toast.makeText(getApplicationContext(), "Voucher added!",
+                                        Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "End date and start date are invalid!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                "End date and start date are invalid!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -155,29 +165,26 @@ public class AddVoucherActivity extends AppCompatActivity implements View.OnClic
             Date currentDate = new Date();
             Date date = format.parse(s2);
             return date.compareTo(currentDate) >= 0;
-        } catch (ParseException e){
+        } catch (ParseException e) {
 
         }
         return false;
     }
+
     private boolean isGreater(String s1, String s2) {
         String[] ss1 = s1.split("/");
         String[] ss2 = s2.split("/");
-        if(Integer.parseInt(ss2[2]) > Integer.parseInt(ss1[2])) {
+        if (Integer.parseInt(ss2[2]) > Integer.parseInt(ss1[2])) {
             return true;
-        } else if(Integer.parseInt(ss2[2]) < Integer.parseInt(ss1[2])){
+        } else if (Integer.parseInt(ss2[2]) < Integer.parseInt(ss1[2])) {
             return false;
         } else {
-            if(Integer.parseInt(ss2[1]) > Integer.parseInt(ss1[1])) {
+            if (Integer.parseInt(ss2[1]) > Integer.parseInt(ss1[1])) {
                 return true;
-            } else if(Integer.parseInt(ss2[1]) < Integer.parseInt(ss1[1])) {
+            } else if (Integer.parseInt(ss2[1]) < Integer.parseInt(ss1[1])) {
                 return false;
             } else {
-                if(Integer.parseInt(ss2[0]) > Integer.parseInt(ss1[0])) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return Integer.parseInt(ss2[0]) > Integer.parseInt(ss1[0]);
             }
         }
     }

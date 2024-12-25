@@ -8,49 +8,71 @@
     android:layout_height="match_parent"
     tools:context=".DetailOrderActivity">
 
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_margin="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
         android:text="Thông tin đơn hàng"
         android:textSize="30dp"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         android:textColor="#FF5722"/>
 
+    <!-- Horizontal Layout for Order Details -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
+        <!-- Left side labels -->
         <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tên người nhận" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Số điện thoại" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Địa chỉ giao hàng" />
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Trạng thái" />
         </LinearLayout>
 
+        <!-- Right side values -->
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="80dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <TextView
@@ -73,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="Mộ Lao, Hà Đông, Hà Nội" />
+
             <TextView
                 android:id="@+id/status"
                 android:layout_width="match_parent"
@@ -80,34 +103,39 @@
                 android:gravity="right"
                 android:text="Thành công" />
         </LinearLayout>
+
     </LinearLayout>
 
+    <!-- Order Detail Text -->
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chi tiết đơn hàng"
-        android:layout_margin="10dp"/>
+        android:textSize="15dp"
+        android:textStyle="bold|italic"
+        android:layout_margin="5dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="259dp" />
+        android:layout_margin="5dp"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="30dp">
+        android:gravity="center_vertical"
+        android:layout_margin="10dp">
 
+        <!-- Left side labels -->
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="30dp"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -127,9 +155,11 @@
                 android:text="Thành tiền" />
         </LinearLayout>
 
+        <!-- Right side values -->
         <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -159,19 +189,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- Buttons Section (Centered) -->
     <LinearLayout
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#F44336"
-            android:text="back"
-            android:textColor="@color/white" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="wrap_content"

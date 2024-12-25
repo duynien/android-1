@@ -7,97 +7,118 @@
     android:layout_height="match_parent"
     tools:context=".AddVoucherActivity">
 
+    <!-- Title Text -->
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/title_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="48dp"
         android:text="Add Voucher"
         android:textColor="#FF5722"
         android:textSize="30dp"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="16dp"/>
 
+    <!-- Start Time -->
     <EditText
         android:id="@+id/start_time"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="50dp"
         android:ems="10"
+        android:hint="Start time"
         android:inputType="text"
-        android:hint="start time"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@id/title_page"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- Start Date -->
     <EditText
         android:id="@+id/start_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="50dp"
         android:ems="10"
+        android:hint="Start date"
         android:inputType="date"
-        android:hint="start date"
-        app:layout_constraintStart_toEndOf="@+id/start_time"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/start_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- End Date -->
     <EditText
         android:id="@+id/end_date"
-        android:layout_width="356dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="End date"
         android:inputType="date"
-        android:hint="end date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_time" />
+        app:layout_constraintTop_toBottomOf="@id/start_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- Title -->
     <EditText
         android:id="@+id/title"
-        android:layout_width="356dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Title"
         android:inputType="text"
-        android:hint="title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_date" />
+        app:layout_constraintTop_toBottomOf="@id/end_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- Code -->
     <EditText
         android:id="@+id/code"
-        android:layout_width="356dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Code"
         android:inputType="text"
-        android:hint="code"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- Percentage -->
     <EditText
         android:id="@+id/percentage"
-        android:layout_width="356dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Percentage"
         android:inputType="number"
-        android:hint="percentage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code" />
+        app:layout_constraintTop_toBottomOf="@id/code"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
+    <!-- Add Button -->
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="224dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="#4CAF50"
         android:text="Add"
@@ -109,12 +130,13 @@
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="#E91E63"
         android:text="Cancel"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/percentage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

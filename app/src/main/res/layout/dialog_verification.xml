@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/dialog_background">
+
+    <!-- Dialog Title -->
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Verification"
+        android:textSize="22sp"
+        android:textStyle="bold|italic"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black"
+        tools:ignore="HardcodedText" />
+
+    <!-- Verification Code Input -->
+    <EditText
+        android:id="@+id/verification_code_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Verification Code"
+        android:inputType="number"
+        android:background="@drawable/rounded_edittext"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="#BDBDBD"
+        tools:ignore="HardcodedText" />
+
+    <!-- Buttons in Horizontal Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btn_verify"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Verify"
+            android:backgroundTint="#4464D5"
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ButtonStyle,HardcodedText" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:backgroundTint="#BDBDBD"
+            android:textColor="@color/white"
+            tools:ignore="ButtonOrder,ButtonStyle,HardcodedText" />
+    </LinearLayout>
+</LinearLayout>

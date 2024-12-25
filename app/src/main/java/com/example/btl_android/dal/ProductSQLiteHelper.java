@@ -11,12 +11,12 @@ import androidx.annotation.Nullable;
 import com.example.btl_android.model.Product;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class ProductSQLiteHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "product.db";
-    private static int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
     public ProductSQLiteHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,13 +24,7 @@ public class ProductSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE product (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "image TEXT," +
-                "name TEXT," +
-                "price TEXT," +
-                "description TEXT," +
-                "category TEXT)";
+        String sql = "CREATE TABLE product (" + "id INTEGER PRIMARY KEY AUTOINCREMENT," + "image TEXT," + "name TEXT," + "price TEXT," + "description TEXT," + "category TEXT)";
         db.execSQL(sql);
     }
 
@@ -113,6 +107,7 @@ public class ProductSQLiteHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
     public Product getProductById(int id) {
         SQLiteDatabase st = getReadableDatabase();
         Cursor rs = st.query("product", null, "id = ?", new String[]{String.valueOf(id)}, null, null, null);

@@ -1,39 +1,29 @@
 package com.example.btl_android;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.btl_android.adapter.ViewPagerAdapter;
-import com.example.btl_android.dal.CartSQLiteHelper;
 import com.example.btl_android.dal.UserSQLiteHelper;
 import com.example.btl_android.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String SHARE_PRE_NAME = "mypref";
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private FloatingActionButton fab_product, fab_voucher;
     private User userLogin;
     private SharedPreferences sharedPreferences;
-    private static final String SHARE_PRE_NAME = "mypref";
     private UserSQLiteHelper userSQLiteHelper;
 
     @Override
@@ -41,16 +31,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-//        getApplicationContext().deleteDatabase("orders.db");
-//        getApplicationContext().deleteDatabase("order_product.db");
-//        getApplicationContext().deleteDatabase("user.db");
-//        getApplicationContext().deleteDatabase("voucher.db");
-//        getApplicationContext().deleteDatabase("comment.db");
         fab_product.setOnClickListener(this);
         fab_voucher.setOnClickListener(this);
         sharedPreferences = getSharedPreferences(SHARE_PRE_NAME, MODE_PRIVATE);
         String role = sharedPreferences.getString("role", null);
-        if(role != null && role.equalsIgnoreCase("employee")){
+        if (role != null && role.equalsIgnoreCase("admin")) {
             fab_product.setVisibility(View.VISIBLE);
             fab_voucher.setVisibility(View.VISIBLE);
         } else {
@@ -59,21 +44,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         Intent intent = getIntent();
         userLogin = (User) intent.getSerializableExtra("account");
-        if(userLogin != null){
-            if(userLogin.getRole().equalsIgnoreCase("employee")){
+        if (userLogin != null) {
+            if (userLogin.getRole().equalsIgnoreCase("admin")) {
                 fab_product.setVisibility(View.VISIBLE);
                 fab_voucher.setVisibility(View.VISIBLE);
             }
-            System.out.println(userLogin + "main");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("id", userLogin.getId() + "");
             editor.putString("name", userLogin.getName());
             editor.putString("username", userLogin.getUsername());
             editor.putString("role", userLogin.getRole());
+            editor.putString("email", userLogin.getEmail());
+            editor.putString("phone", userLogin.getPhone());
             editor.apply();
         }
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -83,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         navigationView.getMenu().findItem(R.id.mHome).setChecked(true);
                         break;
@@ -107,24 +94,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if(id == R.id.mHome){
-                    viewPager.setCurrentItem(0);
-                } else if(id == R.id.mCart){
-                    viewPager.setCurrentItem(1);
-                } else if(id == R.id.mOrder){
-                    viewPager.setCurrentItem(2);
-                } else if(id == R.id.mVoucher){
-                    viewPager.setCurrentItem(3);
-                } else if(id == R.id.mAccount){
-                    viewPager.setCurrentItem(4);
-                }
-                return true;
-            }
-        });
+        navigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        int id = item.getItemId();
+                        if (id == R.id.mHome) {
+                            viewPager.setCurrentItem(0);
+                        } else if (id == R.id.mCart) {
+                            viewPager.setCurrentItem(1);
+                        } else if (id == R.id.mOrder) {
+                            viewPager.setCurrentItem(2);
+                        } else if (id == R.id.mVoucher) {
+                            viewPager.setCurrentItem(3);
+                        } else if (id == R.id.mAccount) {
+                            viewPager.setCurrentItem(4);
+                        }
+                        return true;
+                    }
+                });
     }
 
     private void initView() {
@@ -134,17 +122,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_voucher = findViewById(R.id.fab_voucher);
         fab_product.setVisibility(View.INVISIBLE);
         fab_voucher.setVisibility(View.INVISIBLE);
-
         userSQLiteHelper = new UserSQLiteHelper(this);
     }
 
     @Override
     public void onClick(View view) {
-        if(view == fab_product){
+        if (view == fab_product) {
             Intent intent = new Intent(MainActivity.this, AddProductActivity.class);
             startActivity(intent);
         }
-        if(view == fab_voucher){
+        if (view == fab_voucher) {
             Intent intent = new Intent(MainActivity.this, AddVoucherActivity.class);
             startActivity(intent);
         }

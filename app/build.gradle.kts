@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-
+    implementation("com.sun.mail:android-mail:1.6.5")
+    implementation("com.sun.mail:android-activation:1.6.5")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

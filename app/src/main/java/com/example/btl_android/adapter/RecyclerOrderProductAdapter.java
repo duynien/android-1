@@ -15,7 +15,8 @@ import com.example.btl_android.model.OrderProduct;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerOrderProductAdapter extends RecyclerView.Adapter<RecyclerOrderProductAdapter.OrderProductViewHolder>{
+public class RecyclerOrderProductAdapter extends
+        RecyclerView.Adapter<RecyclerOrderProductAdapter.OrderProductViewHolder> {
     private List<OrderProduct> list;
 
     public RecyclerOrderProductAdapter() {
@@ -25,7 +26,8 @@ public class RecyclerOrderProductAdapter extends RecyclerView.Adapter<RecyclerOr
     @NonNull
     @Override
     public OrderProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_cart_order, parent, false);
         return new OrderProductViewHolder(view);
     }
 
@@ -50,6 +52,7 @@ public class RecyclerOrderProductAdapter extends RecyclerView.Adapter<RecyclerOr
     public class OrderProductViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name, price, amount;
+
         public OrderProductViewHolder(@NonNull View view) {
             super(view);
             image = view.findViewById(R.id.image);

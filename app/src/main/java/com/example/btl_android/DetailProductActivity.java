@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -48,7 +49,7 @@ import java.util.List;
 
 public class DetailProductActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView image;
-    private FloatingActionButton fab_back, fab_addcart, fab_buy;
+    private FloatingActionButton fab_addcart, fab_buy;
     private TextView price, name, desc, star, content;
     private RatingBar rating;
     private EditText comment;
@@ -68,9 +69,16 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
         initView();
-        fab_back.setOnClickListener(this);
         fab_addcart.setOnClickListener(this);
         fab_buy.setOnClickListener(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Detail Product");
+        }
 
         Intent intent = getIntent();
         product = (Product) intent.getSerializableExtra("product");
@@ -118,9 +126,14 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private void initView() {
         image = findViewById(R.id.image);
-        fab_back = findViewById(R.id.fab_back);
         fab_addcart = findViewById(R.id.fab_addcart);
         fab_buy = findViewById(R.id.fab_buy);
         price = findViewById(R.id.price);
@@ -183,9 +196,6 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
-        }
-        if(view == fab_back){
-            finish();
         }
         if(view == fab_addcart){
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -275,8 +285,12 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         List<Order> list1 = orderSQLiteHelper.getOrderByUserId(user_id);
         for(Order order: list1){
             for(OrderProduct orderProduct: order.getOrderProducts()){
-                if(product_id.equalsIgnoreCase(orderProduct.getProduct().getId() + "") && order.getStatus().equals("Done")){
-                    return true;
+                // Check if the Product is null
+                if (orderProduct.getProduct() != null) {
+                    // Proceed only if Product is not null
+                    if (orderProduct.getProduct().getId() == Integer.parseInt(product_id) && order.getStatus().equals("Done")) {
+                        return true;
+                    }
                 }
             }
         }

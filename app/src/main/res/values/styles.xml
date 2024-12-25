@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#2196F3</item>
+        <item name="colorPrimaryDark">#1976D2</item>
+        <item name="colorAccent">#FFC107</item>
+    </style>
+
+    <!-- EditText Style -->
+    <style name="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:hint">Enter your email</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/edit_text_bg</item> <!-- Optional custom background -->
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <!-- Button Style (Base) -->
+    <style name="ButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Submit Button Style -->
+    <style name="SubmitButtonStyle">
+        <item name="android:backgroundTint">#4464D5</item> <!-- Blue -->
+        <item name="android:text">Submit</item>
+    </style>
+
+    <!-- Cancel Button Style -->
+    <style name="CancelButtonStyle">
+        <item name="android:backgroundTint">#E72E2E</item> <!-- Red -->
+        <item name="android:text">Cancel</item>
+    </style>
+
+    <!-- Confirm Button Style -->
+    <style name="ConfirmButtonStyle">
+        <item name="android:backgroundTint">#259428</item> <!-- Green -->
+        <item name="android:text">Confirm</item>
+    </style>
+
+    <!-- Spinner Style -->
+    <style name="SpinnerStyle">
+        <item name="android:layout_width">0dp</item> <!-- Set width to 0dp for weight-based layout -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">0dp</item> <!-- Adjust margin for better spacing -->
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_weight">1</item> <!-- Equal space in layout -->
+        <item name="android:background">@drawable/spinner_border</item> <!-- Custom border -->
+        <item name="android:textColor">#FF5722</item> <!-- Text color -->
+        <item name="android:textSize">16sp</item> <!-- Text size -->
+        <item name="android:padding">0.5dp</item>
+    </style>
+
+    <!-- Spinner Style for Price -->
+    <style name="SpinnerPriceStyle">
+        <item name="android:layout_width">0dp</item> <!-- Set width to 0dp for weight-based layout -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item> <!-- Adjust margin for better spacing -->
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_weight">1</item> <!-- Equal space in layout -->
+        <item name="android:background">@drawable/spinner_border</item> <!-- Custom border -->
+        <item name="android:textColor">#4CAF50</item> <!-- Different text color -->
+        <item name="android:textSize">16sp</item> <!-- Text size -->
+        <item name="android:padding">0.5dp</item>
+    </style>
+
+
+</resources>

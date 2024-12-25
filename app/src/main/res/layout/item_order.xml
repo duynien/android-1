@@ -8,28 +8,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="#D0939793"
         android:background="@drawable/rounded_button"
         android:layout_margin="10dp"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Date Text -->
         <TextView
             android:id="@+id/date"
-            android:layout_width="250dp"
-            android:layout_height="80dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="14:20 02/02/2024"
-            android:textColor="@color/white"
-            android:textSize="30dp"/>
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:paddingVertical="10dp"
+            android:textStyle="normal" />
+
+        <!-- Total Price Text -->
         <TextView
             android:id="@+id/total_price"
-            android:layout_width="140dp"
-            android:layout_height="80dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="500$"
-            android:background="@drawable/rounded_button"
-            android:textColor="@color/white"
-            android:textSize="30dp"/>
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:paddingVertical="10dp" />
+
+        <!-- Status Text with Inline Background and Styling -->
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Đã giao"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold|italic"
+            android:textSize="20sp"
+            android:paddingVertical="10dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
